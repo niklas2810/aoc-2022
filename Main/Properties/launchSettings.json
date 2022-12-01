@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Main (interactive)": {
+      "commandName": "Project"
+    },
+    "Main (all)": {
+      "commandName": "Project",
+      "commandLineArgs": "all"
+    },
+    "Main (last)": {
+      "commandName": "Project",
+      "commandLineArgs": "last"
+    }
+  }
+}
