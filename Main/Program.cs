@@ -13,6 +13,7 @@ namespace Main
             var exercises = typeof(Program).GetTypeInfo().Assembly.GetTypes()
                 .Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(Exercise)))
                 .Select(t => (Exercise)t.GetConstructor(new Type[0]).Invoke(null))
+                .OrderBy(e => e.Day)
                 .ToList();
 
             Console.WriteLine($"{exercises.Count} Exercises in cache");
