@@ -66,11 +66,11 @@ namespace Main
 
                 Utils.WriteFatLine("[SolvePartOne]");
                 var p1 = f.SolvePartOne();
-                Console.WriteLine("=======> P1: " + f.FormatPartOne(p1));
+                Console.WriteLine("=======> P1: " + p1);
 
                 Utils.WriteFatLine("[SolvePartTwo]");
                 var p2 = f.SolvePartTwo();
-                Console.WriteLine("=======> P2: " + f.FormatPartTwo(p2));
+                Console.WriteLine("=======> P2: " + p2);
 
                 Utils.WriteFatLine("[TearDown]");
                 f.TearDown();

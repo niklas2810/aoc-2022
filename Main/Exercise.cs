@@ -2,7 +2,7 @@
 
 namespace Main
 {
-    internal abstract class Exercise
+    public abstract class Exercise
     {
 
         public abstract string Name { get; }
@@ -16,19 +16,9 @@ namespace Main
             Console.WriteLine("(Nothing to do)");
         }
 
-        public abstract Object SolvePartOne();
+        public abstract long SolvePartOne();
 
-        public virtual String FormatPartOne(Object solution)
-        {
-            return solution.ToString();
-        }
-
-        public abstract Object SolvePartTwo();
-
-        public virtual String FormatPartTwo(Object solution)
-        {
-            return solution.ToString();
-        }
+        public abstract long SolvePartTwo();
 
         public virtual void TearDown()
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Main.Exercises
 {
-    internal class Day02 : Exercise
+    public class Day02 : Exercise
     {
         public override string Name => "Rock Paper Scissors";
 
@@ -56,7 +56,7 @@ namespace Main.Exercises
             }
         }
 
-        public override object SolvePartOne()
+        public override long SolvePartOne()
         {
 
             int winScore = 0;
@@ -73,7 +73,7 @@ namespace Main.Exercises
                 winScore += gameResult;
             }
 
-            return $"Result is {winScore + typeScore}";
+            return winScore + typeScore;
         }
 
         private static int decideResult(int other, int mine)
@@ -91,7 +91,7 @@ namespace Main.Exercises
             }
         }
 
-        public override object SolvePartTwo()
+        public override long SolvePartTwo()
         {
 
             int winScore = 0;
@@ -112,7 +112,7 @@ namespace Main.Exercises
                 winScore += points;
             }
 
-            return $"Result is {winScore + typeScore}";
+            return winScore + typeScore;
         }
 
         private static int getDecisionFor(int other, int mine)

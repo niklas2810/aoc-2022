@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Main.Days
 {
-    internal class Day01 : Exercise
+    public class Day01 : Exercise
     {
         public override string Name => "Calorie Counting";
 
@@ -45,16 +45,18 @@ namespace Main.Days
             Console.WriteLine($"There are {calories.Count} elfs in the dataset");
         }
 
-        public override object SolvePartOne()
+        public override long SolvePartOne()
         {
             (var elf, var maxValue) = calories.Select((value, i) => (i + 1, value)).OrderByDescending(v => v.value).First();
-            return $"Elf {elf} has the most calories with {maxValue}";
+            Console.WriteLine($"Elf {elf} has the most calories with {maxValue}");
+            return maxValue;
         }
 
-        public override object SolvePartTwo()
+        public override long SolvePartTwo()
         {
             var topThree = calories.OrderByDescending(v => v).Take(3).Sum();
-            return $"The top three elfs amount to a calorie count of {topThree}";
+            Console.WriteLine($"The top three elfs amount to a calorie count of {topThree}");
+            return topThree;
         }
     }
 }
