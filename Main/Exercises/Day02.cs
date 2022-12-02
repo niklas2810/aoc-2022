@@ -19,7 +19,7 @@ namespace Main.Exercises
              
         public override void SetUp()
         {
-            string[] lines = System.IO.File.ReadAllLines(@"Inputs/02.txt");
+            string[] lines = System.IO.File.ReadAllLines("Inputs/02.txt");
 
             others.Clear();
             mine.Clear();

@@ -16,7 +16,7 @@ namespace Main.Days
 
         public override void SetUp()
         {
-            string[] lines = System.IO.File.ReadAllLines(@"inputs\01.txt");
+            string[] lines = System.IO.File.ReadAllLines("inputs/01.txt");
             Console.WriteLine($"Read {lines.Length} lines from input file");
 
             CountCalories(lines);
