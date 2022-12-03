@@ -7,7 +7,7 @@ namespace Tests
     [TestClass]
     public class UnitTestDays
     {
-        public void TestPartOne(Exercise day, long result)
+        private void TestPartOne(Exercise day, long result)
         {
             // Act
             var actual = day.SolvePartOne();
@@ -16,7 +16,7 @@ namespace Tests
             Assert.AreEqual(result, actual);
         }
 
-        public void TestPartTwo(Exercise day, long result)
+        private void TestPartTwo(Exercise day, long result)
         {
             // Act
             var actual = day.SolvePartTwo();
@@ -25,33 +25,35 @@ namespace Tests
             Assert.AreEqual(result, actual);
         }
 
+        private void TestDay(Exercise day, long partOne, long partTwo)
+        {
+            // Arrange
+            day.SetUp();
+
+            // Act / Assert
+            TestPartOne(day, partOne);
+            TestPartTwo(day, partTwo);
+
+            day.TearDown();
+        }
+
 
         [TestMethod]
         public void TestDay01()
         {
-            // Arrange
-            var day = new Day01();
-            day.SetUp();
-
-            // Act / Assert
-            TestPartOne(day, 67658);
-            TestPartTwo(day, 200158);
-
-            day.TearDown();
+            TestDay(new Day01(), 67658, 200158);
         }
 
         [TestMethod]
         public void TestDay02()
         {
-            // Arrange
-            var day = new Day02();
-            day.SetUp();
+            TestDay(new Day02(), 12645, 11756);
+        }
 
-            // Act / Assert
-            TestPartOne(day, 12645);
-            TestPartTwo(day, 11756);
-
-            day.TearDown();
+        [TestMethod]
+        public void TestDay03()
+        {
+            TestDay(new Day03(), 7850, 2581);
         }
     }
 }
