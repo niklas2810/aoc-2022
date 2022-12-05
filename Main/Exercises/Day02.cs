@@ -56,7 +56,7 @@ namespace Main.Exercises
             }
         }
 
-        public override long SolvePartOne()
+        public override object SolvePartOne()
         {
 
             int winScore = 0;
@@ -91,7 +91,7 @@ namespace Main.Exercises
             }
         }
 
-        public override long SolvePartTwo()
+        public override object SolvePartTwo()
         {
 
             int winScore = 0;

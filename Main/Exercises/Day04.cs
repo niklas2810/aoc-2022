@@ -25,7 +25,7 @@ namespace Main.Exercises
             }
         }
 
-        public override long SolvePartOne()
+        public override object SolvePartOne()
         {
             long result = 0;
 
@@ -49,7 +49,7 @@ namespace Main.Exercises
             return result;
         }
 
-        public override long SolvePartTwo()
+        public override object SolvePartTwo()
         {
             long result = 0;
 

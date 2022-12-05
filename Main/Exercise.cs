@@ -16,9 +16,9 @@ namespace Main
             Console.WriteLine("(Nothing to do)");
         }
 
-        public abstract long SolvePartOne();
+        public abstract object SolvePartOne();
 
-        public abstract long SolvePartTwo();
+        public abstract object SolvePartTwo();
 
         public virtual void TearDown()
         {

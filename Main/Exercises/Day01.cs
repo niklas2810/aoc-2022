@@ -42,13 +42,13 @@ namespace Main.Days
                 calories.Add(currValue);
         }
 
-        public override long SolvePartOne()
+        public override object SolvePartOne()
         {
             (var elf, var maxValue) = calories.Select((value, i) => (i + 1, value)).OrderByDescending(v => v.value).First();
             return maxValue;
         }
 
-        public override long SolvePartTwo()
+        public override object SolvePartTwo()
         {
             var topThree = calories.OrderByDescending(v => v).Take(3).Sum();
             return topThree;
