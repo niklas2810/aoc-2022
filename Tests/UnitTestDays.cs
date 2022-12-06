@@ -67,5 +67,11 @@ namespace Tests
         {
             TestDay(new Day05(), "FRDSQRRCD", "HRFTQVWNN");
         }
+
+        [TestMethod]
+        public void TestDay06()
+        {
+            TestDay(new Day06(), 1356, 2564);
+        }
     }
 }
