@@ -27,7 +27,7 @@ namespace Main.Exercises
             {
                 var line = lines[i];
                 grid[i] = new int[line.Length];
-                foreach(var j in Enumerable.Range(0, line.Length))
+                foreach (var j in Enumerable.Range(0, line.Length))
                 {
                     grid[i][j] = line[j] - '0';
                 }
@@ -71,28 +71,18 @@ namespace Main.Exercises
             return GetBlockedAfter(row, col, -1, 0).Item2 * GetBlockedAfter(row, col, 1, 0).Item2 * GetBlockedAfter(row, col, 0, -1).Item2 * GetBlockedAfter(row, col, 0, 1).Item2;
         }
 
-        private IEnumerable<bool> GetAllVisible()
-        {
-            foreach (var row in Enumerable.Range(0, Rows))
-                foreach (var col in Enumerable.Range(0, Cols))
-                    yield return IsVisible(row, col);
-        }
-
         public override object SolvePartOne()
         {
-            return GetAllVisible().Where(b => b).Count();
-        }
-
-        private IEnumerable<int> GetAllScenicScores()
-        {
-            foreach (var row in Enumerable.Range(0, Rows))
-                foreach (var col in Enumerable.Range(0, Cols))
-                    yield return GetScenicScore(row, col);
+            return Enumerable.Range(0, Rows).SelectMany(row =>
+            Enumerable.Range(0, Cols).Select(col =>
+            IsVisible(row, col))).Where(b => b).Count();
         }
 
         public override object SolvePartTwo()
         {
-            return GetAllScenicScores().Max();
+            return Enumerable.Range(0, Rows).SelectMany(row =>
+            Enumerable.Range(0, Cols).Select(col =>
+            GetScenicScore(row, col))).Max();
         }
     }
 }
