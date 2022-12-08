@@ -79,5 +79,11 @@ namespace Tests
         {
             TestDay(new Day07(), 1367870L, 549173L);
         }
+
+        [TestMethod]
+        public void TestDay08()
+        {
+            TestDay(new Day08(), 1711, 301392);
+        }
     }
 }
