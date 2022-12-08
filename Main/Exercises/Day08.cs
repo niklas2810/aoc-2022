@@ -15,136 +15,84 @@ namespace Main.Exercises
         public override byte Day => 8;
 
         private int[][] grid;
+        private int Rows { get => grid.Length; }
+        private int Cols { get => grid[0].Length; }
 
         public override void SetUp()
         {
             var lines = System.IO.File.ReadAllLines("Inputs/08.txt");
-
             grid = new int[lines.Length][];
 
-            for(int i=0; i < lines.Length; ++i)
+            foreach (var i in Enumerable.Range(0, lines.Length))
             {
                 var line = lines[i];
-
                 grid[i] = new int[line.Length];
-                if (grid[i].Length != grid[0].Length)
-                    throw new NotSupportedException();
-
-                for(int j=0; j < line.Length; ++j)
+                foreach(var j in Enumerable.Range(0, line.Length))
                 {
                     grid[i][j] = line[j] - '0';
                 }
             }
-
-            Console.WriteLine($"Grid: [{grid.Length}x{grid[0].Length}]");
         }
 
-        private int GetHorizontalBlockedAfter(int row, int col, int direction)
+        ///<returns>First element: Reached border? => true, Hit tree? => false, Second element: Amount of trees visible</returns>
+        private (bool, int) GetBlockedAfter(int row, int col, int rowChg, int colChg)
         {
-            var height = grid[row][col];
-            var curr = col+ direction;
+            var i = 1;
+            var currRow = row + i * rowChg;
+            var currCol = col + i * colChg;
 
-            while(curr >= 0 && curr < grid[0].Length)
+            while (currCol >= 0 && currRow >= 0 && currCol < Cols && currRow < Rows)
             {
-                if(grid[row][curr] >= height)
-                    return Math.Abs(curr-col);
+                if (grid[row][col] <= grid[currRow][currCol])
+                    return (false, i);
 
-                curr += direction;
+                ++i;
+                currRow = row + i * rowChg;
+                currCol = col + i * colChg;
             }
 
-            return -1;
-        }
-
-        private int GetVerticalBlockedAfter(int row, int col, int direction)
-        {
-            var height = grid[row][col];
-            var curr = row + direction;
-
-            while (curr >= 0 && curr < grid.Length)
-            {
-                if (grid[curr][col] >= height)
-                    return Math.Abs(curr-row);
-
-                curr += direction;
-            }
-
-            return -1;
-        }
-
-        private bool IsVisibleFrom(int row, int col, int hori, int vert)
-        {
-            if (hori != 0 && vert != 0)
-                throw new NotSupportedException();
-
-            if (hori != 0)
-                return GetHorizontalBlockedAfter(row, col, hori) == -1;
-            else
-                return GetVerticalBlockedAfter(row, col, vert) == -1;
+            return (true, i - 1);
         }
 
         private bool IsVisible(int row, int col)
         {
-            if (row == 0 || row == grid.Length - 1 || col == 0 || col == grid[0].Length - 1)
+            if (row == 0 || row == Rows - 1 || col == 0 || col == Cols - 1)
                 return true;
 
-            return IsVisibleFrom(row, col, -1, 0) || IsVisibleFrom(row, col, 1, 0) || IsVisibleFrom(row, col, 0, -1) || IsVisibleFrom(row, col, 0, 1);
+            return GetBlockedAfter(row, col, -1, 0).Item1 || GetBlockedAfter(row, col, 1, 0).Item1 || GetBlockedAfter(row, col, 0, -1).Item1 || GetBlockedAfter(row, col, 0, 1).Item1;
         }
 
 
         private int GetScenicScore(int row, int col)
         {
-            var nordBlocked = GetVerticalBlockedAfter(row, col, -1);
-            var nordScore = nordBlocked == -1 ? row : nordBlocked;
+            if (row == 0 || row == Rows - 1 || col == 0 || col == Cols - 1)
+                return 0;
 
-            var southBlocked = GetVerticalBlockedAfter(row, col, 1);
-            var southScore = southBlocked == -1 ? grid.Length-row - 1 : southBlocked;
-
-            var westBlocked = GetHorizontalBlockedAfter(row, col, -1);
-            var westScore = westBlocked == -1 ? col : westBlocked;
-
-            var eastBlocked = GetHorizontalBlockedAfter(row, col, 1);
-            var eastScore = eastBlocked == -1 ? grid[0].Length - col - 1 : eastBlocked;
-
-            return nordScore * southScore * westScore  * eastScore ;
+            return GetBlockedAfter(row, col, -1, 0).Item2 * GetBlockedAfter(row, col, 1, 0).Item2 * GetBlockedAfter(row, col, 0, -1).Item2 * GetBlockedAfter(row, col, 0, 1).Item2;
         }
 
+        private IEnumerable<bool> GetAllVisible()
+        {
+            foreach (var row in Enumerable.Range(0, Rows))
+                foreach (var col in Enumerable.Range(0, Cols))
+                    yield return IsVisible(row, col);
+        }
 
         public override object SolvePartOne()
         {
-            var rows = grid.Length;
-            var cols = grid[0].Length;
-            var visible = 0;
+            return GetAllVisible().Where(b => b).Count();
+        }
 
-            for(int row = 0; row < rows; ++row)
-            {
-                for(int col = 0; col < cols; ++col)
-                {
-                    if (IsVisible(row, col))
-                        ++visible;
-                }
-            }
-
-            return visible;
+        private IEnumerable<int> GetAllScenicScores()
+        {
+            foreach (var row in Enumerable.Range(0, Rows))
+                foreach (var col in Enumerable.Range(0, Cols))
+                    yield return GetScenicScore(row, col);
         }
 
         public override object SolvePartTwo()
         {
-            var rows = grid.Length;
-            var cols = grid[0].Length;
-            var maxScore = 0;
-
-            for (int row = 0; row < rows; ++row)
-            {
-                for (int col = 0; col < cols; ++col)
-                {
-                    var score = GetScenicScore(row, col);
-
-                    if(score > maxScore)
-                        maxScore = score;
-                }
-            }
-
-            return maxScore;
+            return GetAllScenicScores().Max();
         }
     }
 }
