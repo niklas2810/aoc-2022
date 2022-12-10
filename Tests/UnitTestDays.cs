@@ -1,6 +1,7 @@
 using Main;
 using Main.Days;
 using Main.Exercises;
+using System.Text;
 
 namespace Tests
 {
@@ -90,6 +91,20 @@ namespace Tests
         public void TestDay09()
         {
             TestDay(new Day09(), 6311, 2482);
+        }
+
+        [TestMethod]
+        public void TestDay10()
+        {
+            var partTwo = new StringBuilder(Environment.NewLine);
+            partTwo.AppendLine("###..#.....##..####.#..#..##..####..##..");
+            partTwo.AppendLine("#..#.#....#..#.#....#.#..#..#....#.#..#.");
+            partTwo.AppendLine("#..#.#....#....###..##...#..#...#..#....");
+            partTwo.AppendLine("###..#....#.##.#....#.#..####..#...#.##.");
+            partTwo.AppendLine("#....#....#..#.#....#.#..#..#.#....#..#.");
+            partTwo.AppendLine("#....####..###.#....#..#.#..#.####..###.");
+
+            TestDay(new Day10(), 15880, partTwo.ToString());
         }
     }
 }
