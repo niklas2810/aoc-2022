@@ -106,5 +106,11 @@ namespace Tests
 
             TestDay(new Day10(), 15880, partTwo.ToString());
         }
+
+        [TestMethod]
+        public void TestDay11()
+        {
+            TestDay(new Day11(), 55458L, 14508081294L);
+        }
     }
 }
