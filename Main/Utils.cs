@@ -12,5 +12,12 @@ namespace Main
             Console.WriteLine($"\n{text}\n");
         }
 
+        public static void WriteIndent(string text, int indent)
+        {
+            for(int i = 0; i < indent; i++)
+                Console.Write(' ');
+            Console.WriteLine(text);
+        }
+
     }
 }
