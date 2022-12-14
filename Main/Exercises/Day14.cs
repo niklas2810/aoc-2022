@@ -1,71 +1,17 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Main.Exercises
 {
     public class Day14 : Exercise
     {
-
-        private class RockFormation
-        {
-            public (int, int) From { get; set; }
-            public (int, int) To { get; set; }
-
-            public int FX => From.Item1;
-            public int FY => From.Item2;
-
-            public int TX => To.Item1;
-            public int TY => To.Item2;
-
-            public bool Blocks(int x, int y)
-            {
-                if (FX == TX)
-                    return BlocksVertical(x, y);
-                else if (FY == TY)
-                    return BlocksHorizontal(x, y);
-
-                throw new NotSupportedException();
-            }
-
-            private bool BlocksVertical(int x, int y)
-            {
-                if (x != FX)
-                    return false;
-                if (y < Math.Min(FY, TY))
-                    return false;
-                if (y > Math.Max(FY, TY))
-                    return false;
-
-                return true;
-            }
-
-            private bool BlocksHorizontal(int x, int y)
-            {
-                if (y != FY)
-                    return false;
-                if (x < Math.Min(FX, TX))
-                    return false;
-                if (x > Math.Max(FX, TX))
-                    return false;
-
-                return true;
-            }
-        }
-
         public override string Name => "Regolith Reservoir";
 
         public override string Description => "Track where sand is falling in!";
 
         public override byte Day => 14;
 
-        private List<RockFormation> formations = new();
         private Hashtable cache = new();
 
         public override void SetUp()
@@ -77,15 +23,30 @@ namespace Main.Exercises
                 {
                     var from = parts[i - 1];
                     var to = parts[i];
-                    RockFormation rock = new RockFormation
-                    {
-                        From = (from[0], from[1]),
-                        To = (to[0], to[1])
-                    };
 
-                    formations.Add(rock);
+                    AddBlockedToCache(from, to);
                 }
             }
+        }
+
+        private void AddBlockedToCache(int[] from, int[] to)
+        {
+            int dx = 0;
+            int dy = 0;
+            if (from[0] == to[0]) // Vertical
+                dy = from[1] < to[1] ? 1 : -1;
+            else if (from[1] == to[1]) // Horizontal
+                dx = from[0] < to[0] ? 1 : -1;
+
+            while (from[0] != to[0] || from[1] != to[1])
+            {
+                if (!cache.ContainsKey((from[0], from[1])))
+                    cache.Add((from[0], from[1]), true);
+                from[0] += dx;
+                from[1] += dy;
+            }
+            if (!cache.ContainsKey((to[0], to[1])))
+                cache.Add((to[0], to[1]), true);
         }
 
         private bool IsBlocked((int, int) pos, ref HashSet<(int, int)> sand)
@@ -93,10 +54,10 @@ namespace Main.Exercises
             if (sand.Contains(pos))
                 return true;
 
-            if (!cache.ContainsKey(pos))
-                cache.Add(pos, formations.Where(f => f.Blocks(pos.Item1, pos.Item2)).Any());
+            if (cache.ContainsKey(pos))
+                return true;
 
-            return (bool)cache[pos];
+            return false;
         }
 
         private (int, int) SimulateFall((int, int) start, int yDelimeter, ref HashSet<(int, int)> sandPoints, bool partTwo = false)
@@ -134,7 +95,7 @@ namespace Main.Exercises
 
         public override object SolvePartOne()
         {
-            var maxY = formations.Select(x => Math.Max(x.FY, x.TY)).Max();
+            var maxY = cache.Keys.Cast<(int, int)>().Select(it => it.Item2).Max();
 
             HashSet<(int, int)> sandPoints = new();
 
@@ -151,7 +112,7 @@ namespace Main.Exercises
 
         public override object SolvePartTwo()
         {
-            var maxY = formations.Select(x => Math.Max(x.FY, x.TY)).Max();
+            var maxY = cache.Keys.Cast<(int, int)>().Select(it => it.Item2).Max();
             HashSet<(int, int)> sandPoints = new();
 
             while (true)
