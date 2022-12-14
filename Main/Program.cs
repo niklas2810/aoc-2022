@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -65,12 +66,15 @@ namespace Main
                 f.SetUp();
 
                 Utils.WriteFatLine("[SolvePartOne]");
+                var sw = new Stopwatch();
+                sw.Start();
                 var p1 = f.SolvePartOne();
-                Console.WriteLine("=======> P1: " + p1);
+                Console.WriteLine($"=======> P1: {p1} (in {sw.ElapsedMilliseconds}ms)");
 
                 Utils.WriteFatLine("[SolvePartTwo]");
+                sw.Restart();
                 var p2 = f.SolvePartTwo();
-                Console.WriteLine("=======> P2: " + p2);
+                Console.WriteLine($"=======> P2: {p2} (in {sw.ElapsedMilliseconds}ms)");
 
                 Utils.WriteFatLine("[TearDown]");
                 f.TearDown();
