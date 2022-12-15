@@ -116,32 +116,32 @@ namespace Main.Exercises
                 var topY = zone.SensorY + zone.Distance - 1;
                 var bottomY = zone.SensorY - zone.Distance - 1;
 
-                //Console.WriteLine($"==> ({zone.SensorX}, {zone.SensorY}): top is {topY}, bottom is {bottomY}");
+                if (bottomY < 0 || topY > 4_000_000)
+                    return;
 
                 foreach(var offset in Enumerable.Range(0, zone.Distance))
                 {
                     var positions = new (int, int)[] { (zone.SensorX + offset, topY - offset), (zone.SensorX - offset, topY - offset), (zone.SensorX + offset, bottomY + offset), (zone.SensorX - offset, bottomY + offset) };
                     foreach ((var x, var y) in positions)
                     {
-                        //Console.WriteLine($"({x}, {y}) for sensor ({zone.SensorX}, {zone.SensorY}), {i}/{zone.Distance}");
-
-
+                        var pos = (x, y);
                         if (x < 0 || y < 0 || x > 4_000_000 || y > 4_000_000)
                             continue;
-                        else if (bPos.Contains((x, y)))
+                        else if (bPos.Contains(pos))
                             continue;
 
                         var found = false;
+
                         foreach (var zone2 in exclusionZones)
                         {
-                            if (!found && zone2.IsInRange((x, y)))
+                            if (!found && zone2.IsInRange(pos))
                                 found = true;
                         }
 
                         if (!found)
                         {
-                            if(!results.Contains((x, y)))
-                                results.Add((x, y));
+                            if(!results.Contains(pos))
+                                results.Add(pos);
                             return;
                         }
                     }
