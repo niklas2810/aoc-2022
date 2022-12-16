@@ -136,5 +136,18 @@ namespace Tests
         {
             TestDay(new Day15(), 4717631, 13197439355220L);
         }
+
+        [TestMethod]
+        public void TestDay16()
+        {
+            var day = new Day16();
+            day.SetUp();
+
+            TestPartOne(day, 2250);
+
+            // Because my P2 for this day is a burning mess (with ~80min exec time), lets just skip this here...
+
+            day.TearDown();
+        }
     }
 }
